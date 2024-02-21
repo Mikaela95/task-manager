@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, GridItem, Heading, Center } from "@chakra-ui/react";
 import axios from "axios";
 
