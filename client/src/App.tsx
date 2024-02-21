@@ -6,7 +6,7 @@ function App() {
   const [tasks, setTask] = useState<any[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/test").then((res) => {
+    axios.get("http://localhost:4000/todos").then((res) => {
       const tasks = res.data;
       setTask(tasks);
     });
@@ -26,7 +26,7 @@ function App() {
       </GridItem>
       <div>
         {tasks.map((task) => (
-          <div key={task.id}>{task.name}</div>
+          <div key={task.id}>{task.description}</div>
         ))}
       </div>
     </Grid>
