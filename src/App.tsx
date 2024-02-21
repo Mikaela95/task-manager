@@ -1,8 +1,17 @@
-import React from "react";
-import "./App.css";
-import { Input, Grid, GridItem, Heading, Center } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Grid, GridItem, Heading, Center } from "@chakra-ui/react";
+import axios from "axios";
 
 function App() {
+  const [tasks, setTask] = useState<any[]>([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:4000/test").then((res) => {
+      const tasks = res.data;
+      setTask(tasks);
+    });
+  }, []);
+
   return (
     <Grid
       h="200px"
@@ -15,6 +24,11 @@ function App() {
           <Heading>Task Manager</Heading>
         </Center>
       </GridItem>
+      <div>
+        {tasks.map((task) => (
+          <div key={task.id}>{task.name}</div>
+        ))}
+      </div>
     </Grid>
   );
 }
