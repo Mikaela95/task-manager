@@ -1,36 +1,27 @@
-import React, { useEffect, useState } from "react";
 import { Grid, GridItem, Heading, Center } from "@chakra-ui/react";
-import axios from "axios";
+import InputTodo from "./components/InputTodo";
 
 function App() {
-  const [tasks, setTask] = useState<any[]>([]);
-
-  useEffect(() => {
-    axios.get("http://localhost:4000/todos").then((res) => {
-      const tasks = res.data;
-      setTask(tasks);
-    });
-  }, []);
-
   return (
     <Grid
       h="200px"
       templateRows="repeat(2, 1fr)"
-      templateColumns="repeat(5, 1fr)"
-      gap={4}
+      templateColumns="repeat(12, 1fr)"
+      gap={6}
     >
-      <GridItem colSpan={5}>
-        <Center bg="tomato" h="100px" color="white">
+      <GridItem colSpan={12}>
+        <Center bg="#142d4c" h="100px" color="white">
           <Heading>Task Manager</Heading>
         </Center>
       </GridItem>
-      <div>
-        {tasks.map((task) => (
-          <div key={task.id}>{task.description}</div>
-        ))}
-      </div>
+      <GridItem colSpan={3} bg="#385170"></GridItem>
+      <GridItem colSpan={6} bg="#9fd3c7">
+        <InputTodo />
+      </GridItem>
+      <GridItem colSpan={3} bg="#385170"></GridItem>
     </Grid>
   );
 }
 
 export default App;
+
