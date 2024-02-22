@@ -1,5 +1,6 @@
 import { Grid, GridItem, Heading, Center } from "@chakra-ui/react";
-import InputTodo from "./components/InputTodo";
+import InputTask from "./components/InputTask";
+import ListTask from "./components/ListTask";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       </GridItem>
       <GridItem colSpan={3} bg="#385170"></GridItem>
       <GridItem colSpan={6} bg="#9fd3c7">
-        <InputTodo />
+        <InputTask />
+        <ListTask />
       </GridItem>
       <GridItem colSpan={3} bg="#385170"></GridItem>
     </Grid>
@@ -24,4 +26,3 @@ function App() {
 }
 
 export default App;
-

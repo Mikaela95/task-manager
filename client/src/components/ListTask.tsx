@@ -3,17 +3,28 @@ import { CheckIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function InputTodo() {
+export default function ListTask() {
   const [tasks, setTask] = useState<any[]>([]);
+
+  // Key todo_id: Value has it been completed Bool
   const [completedTasks, setCompletedTasks] = useState<{
     [key: string]: boolean;
   }>({});
 
+  // TODO: update list instantly when user adds a new task
+  const getTodos = async () => {
+    try {
+      axios.get("http://localhost:4000/todos").then((res) => {
+        const tasks = res.data;
+        setTask(tasks);
+      });
+    } catch (error) {
+      console.error("Unable to get tasks: ", error);
+    }
+  };
+
   useEffect(() => {
-    axios.get("http://localhost:4000/todos").then((res) => {
-      const tasks = res.data;
-      setTask(tasks);
-    });
+    getTodos();
   }, []);
 
   function handleComplete(id: number) {
