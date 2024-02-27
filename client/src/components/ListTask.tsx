@@ -11,6 +11,10 @@ export default function ListTask() {
     [key: string]: boolean;
   }>({});
 
+  useEffect(() => {
+    getTodos();
+  }, []);
+
   // TODO: update list instantly when user adds a new task
   const getTodos = async () => {
     try {
@@ -23,15 +27,17 @@ export default function ListTask() {
     }
   };
 
-  useEffect(() => {
-    getTodos();
-  }, []);
-
-  function handleComplete(id: number) {
+  const handleComplete = async (id: number) => {
     setCompletedTasks((prevCompletedTasks) => ({
       ...prevCompletedTasks,
       [id]: !prevCompletedTasks[id],
     }));
+    try {
+      await axios.delete(`http://localhost:4000/todos/${id}`)
+      getTodos();
+    } catch (error: any) {
+      console.error(error.message);
+    }
   }
 
   return (
