@@ -1,56 +1,25 @@
 import { Divider, Text, IconButton } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function ListTask() {
-  const [tasks, setTask] = useState<any[]>([]);
-
+export default function ListTask({ todos, onDeleteTask }: any) {
   // Key todo_id: Value has it been completed Bool
   const [completedTasks, setCompletedTasks] = useState<{
     [key: string]: boolean;
   }>({});
 
-  useEffect(() => {
-    getTodos();
-  }, []);
-
-  // TODO: update list instantly when user adds a new task
-  const getTodos = async () => {
-    try {
-      axios.get("http://localhost:4000/todos").then((res) => {
-        const tasks = res.data;
-        setTask(tasks);
-      });
-    } catch (error) {
-      console.error("Unable to get tasks: ", error);
-    }
-  };
-
-  const handleComplete = async (id: number) => {
-    setCompletedTasks((prevCompletedTasks) => ({
-      ...prevCompletedTasks,
-      [id]: !prevCompletedTasks[id],
-    }));
-    try {
-      await axios.delete(`http://localhost:4000/todos/${id}`)
-      getTodos();
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }
-
+    
   return (
     <>
-      {tasks.map((task) => (
-        <Text fontSize="md" key={task.todo_id}>
-          {task.description}
+      {todos.map((todo: any) => (
+        <Text fontSize="md" key={todo.todo_id}>
+          {todo.description}
           <IconButton
             aria-label="complete task"
             colorScheme="pink"
             isRound={true}
-            icon={completedTasks[task.todo_id] ? <CheckIcon /> : <></>}
-            onClick={() => handleComplete(task.todo_id)}
+            icon={completedTasks[todo.todo_id] ? <CheckIcon /> : <></>}
+            onClick={() => onDeleteTask(todo.todo_id)}
           />
           <Divider />
         </Text>
