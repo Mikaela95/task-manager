@@ -3,11 +3,13 @@ import InputTask from "./components/InputTask";
 import ListTask from "./components/ListTask";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "./App.css";
 
 function App() {
   const [todos, setTodos] = useState<any[]>([]);
   const [input, setInput] = useState({
     description: "",
+    favourite: false,
   });
 
   useEffect(() => {
@@ -30,9 +32,10 @@ function App() {
     try {
       await axios.post("/todos", {
         description: newTodo.target.value,
+        favourite: false,
       });
       getTodos();
-      setInput({ description: "" });
+      setInput({ description: "", favourite: false });
     } catch (error) {
       console.error("Error submitting task: ", error);
     }
@@ -46,6 +49,21 @@ function App() {
       console.error(error.message);
     }
   };
+
+  const handleFavouriteTodo = async (todo: any, favourite: boolean) => {
+    console.log("todo: ", todo.description);
+    console.log("favtodo: ", favourite);
+    try {
+      await axios.put(`http://localhost:4000/todos/${todo.todo_id}`, {
+        description: todo.description,
+        favourite: favourite,
+      });
+      getTodos();
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <Grid
       h="200px"
@@ -58,18 +76,27 @@ function App() {
           <Heading>Task Manager</Heading>
         </Center>
       </GridItem>
-      <GridItem colSpan={3} bg="#385170">
+      <GridItem colSpan={3} bg="#385170" ml={"2em"}>
         <Heading>Done Tasks</Heading>
       </GridItem>
-      <GridItem colSpan={6} bg="#9fd3c7">
+      <GridItem
+        colSpan={6}
+        bg="#9fd3c7"
+        minHeight={"20em"}
+        overflowY={"scroll"}
+      >
         <InputTask
           onAddTask={handleAddTodo}
           input={input}
           setInput={setInput}
         />
-        <ListTask todos={todos} onDeleteTask={handleDeleteTodo} />
+        <ListTask
+          todos={todos}
+          onDeleteTask={handleDeleteTodo}
+          onFavouriteTask={handleFavouriteTodo}
+        />
       </GridItem>
-      <GridItem colSpan={3} bg="#385170">
+      <GridItem colSpan={3} bg="#385170" style={{ marginRight: "2em" }}>
         <Heading>Important Tasks</Heading>
       </GridItem>
     </Grid>

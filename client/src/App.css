@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+.GridItem {
+  margin: 50em;
+}
+
+.p {
+  color: pink;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
