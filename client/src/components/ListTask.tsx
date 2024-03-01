@@ -16,14 +16,19 @@ export default function ListTask({
 
   const [favouriteStatus, setFavouriteStatus] = useState<{
     [key: string]: boolean;
-  }>(() => {
+  }>(
+    /* () => {
     // Create an object with each todo item's ID as key and false as value
     const initialFavouriteStatus: { [key: string]: boolean } = {};
     todos.forEach((todo: any) => {
       initialFavouriteStatus[todo.todo_id] = false;
     });
     return initialFavouriteStatus;
-  });
+    
+  } */ {}
+  );
+  console.log("fav status: ", favouriteStatus);
+  console.log("todos: ", todos);
 
   const toggleFavourite = (todoId: string) => {
     setFavouriteStatus((prevStaus) => ({
@@ -31,8 +36,6 @@ export default function ListTask({
       [todoId]: !prevStaus[todoId],
     }));
   };
-
-  console.log("todos: ", todos);
 
   return (
     <>
@@ -49,7 +52,8 @@ export default function ListTask({
           <IconButton
             aria-label="favourite"
             as={CiStar}
-            color={favouriteStatus[todo.todo_id] ? "yellow" : "black"}
+            /* color={favouriteStatus[todo.todo_id] ? "yellow" : "black"} */
+            color={todo.favourite ? "yellow" : "black"}
             backgroundColor={"transparent"}
             onClick={() => {
               const updatedFavourite = !favouriteStatus[todo.todo_id];

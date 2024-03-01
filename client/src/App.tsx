@@ -1,12 +1,14 @@
 import { Grid, GridItem, Heading, Center } from "@chakra-ui/react";
 import InputTask from "./components/InputTask";
 import ListTask from "./components/ListTask";
+import ImportantTasks from "./components/ImportantTasks";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 
 function App() {
   const [todos, setTodos] = useState<any[]>([]);
+  const [favTodos, setFavTodos] = useState<any[]>([]);
   const [input, setInput] = useState({
     description: "",
     favourite: false,
@@ -14,6 +16,7 @@ function App() {
 
   useEffect(() => {
     getTodos();
+    getFavTodos();
   }, []);
 
   const getTodos = async () => {
@@ -24,6 +27,17 @@ function App() {
       });
     } catch (error) {
       console.error("Unable to get tasks: ", error);
+    }
+  };
+
+  const getFavTodos = async () => {
+    try {
+      axios.get("/todos/favourite").then((res) => {
+        const favTodos = res.data;
+        setFavTodos(favTodos);
+      });
+    } catch (error) {
+      console.error("Unable to retrieve favourite todos: ", error);
     }
   };
 
@@ -98,6 +112,7 @@ function App() {
       </GridItem>
       <GridItem colSpan={3} bg="#385170" style={{ marginRight: "2em" }}>
         <Heading>Important Tasks</Heading>
+        <ImportantTasks favTodos={favTodos} />
       </GridItem>
     </Grid>
   );
