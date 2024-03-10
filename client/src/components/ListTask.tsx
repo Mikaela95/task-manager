@@ -1,8 +1,7 @@
-import { Divider, Text, IconButton } from "@chakra-ui/react";
+import { Divider, Text, IconButton, Checkbox } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import { CiStar } from "react-icons/ci";
-import { FaStar } from "react-icons/fa";
 
 export default function ListTask({
   todos,
@@ -40,14 +39,20 @@ export default function ListTask({
   return (
     <>
       {todos.map((todo: any) => (
-        <Text fontSize="md" key={todo.todo_id}>
-          {todo.description}
-          <IconButton
+        <div key={todo.todo_id}>
+          <Text style={{ display: "inline", marginLeft: "1rem" }}>
+            {todo.description}
+          </Text>
+          {/* <IconButton
             aria-label="complete task"
             colorScheme="blue"
             isRound={true}
-            icon={completedTasks[todo.todo_id] ? <CheckIcon /> : <></>}
+            icon={completedTasks[todo.todo_id] ? <Checkbox /> : <></>}
             onClick={() => onDeleteTask(todo.todo_id)}
+          /> */}
+          <Checkbox
+            onChange={() => onDeleteTask(todo.todo_id)}
+            style={{ verticalAlign: "middle", margin: "0.8em" }}
           />
           <IconButton
             aria-label="favourite"
@@ -62,7 +67,7 @@ export default function ListTask({
             }}
           />
           <Divider />
-        </Text>
+        </div>
       ))}
     </>
   );

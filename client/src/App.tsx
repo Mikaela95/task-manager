@@ -32,7 +32,7 @@ function App() {
 
   const getFavTodos = async () => {
     try {
-      axios.get("/todos/favourite").then((res) => {
+      await axios.get("/todos/favourite").then((res) => {
         const favTodos = res.data;
         setFavTodos(favTodos);
       });

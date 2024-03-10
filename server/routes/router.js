@@ -21,9 +21,10 @@ router.get("/test", (req, res) => {
 router.post("/todos", async (req, res) => {
   try {
     const { description } = req.body;
+    const { favourite } = false;
     const newTodo = await pool.query(
-      "INSERT INTO todo (description) VALUES($1) RETURNING *",
-      [description]
+      "INSERT INTO todo (description, favourite) VALUES($1, $2) RETURNING *",
+      [description, favourite]
     );
     res.json(newTodo);
   } catch (error) {
@@ -36,6 +37,18 @@ router.get("/todos", async (req, res) => {
   try {
     const allTodos = await pool.query("SELECT * from todo");
     res.json(allTodos.rows);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Get all favourite todos
+router.get("/todos/favourite", async (req, res) => {
+  try {
+    const favTodos = await pool.query(
+      "SELECT * FROM todo WHERE favourite = true"
+    );
+    res.json(favTodos.rows);
   } catch (error) {
     console.error(error.message);
   }
@@ -59,9 +72,10 @@ router.put("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { description } = req.body;
+    const { favourite } = req.body;
     const updateTodo = await pool.query(
-      "UPDATE todo SET description = $1 WHERE todo_id = $2",
-      [description, id]
+      "UPDATE todo SET description = $1, favourite =$3 WHERE todo_id = $2",
+      [description, id, favourite]
     );
     res.json("Todo was updated");
   } catch (error) {
